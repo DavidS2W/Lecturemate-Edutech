@@ -46,8 +46,8 @@ function QuestionPage(){
             getQuery = await getDoc(doc(db, "course_db", courseID));
             let course = getQuery.data();
             let storiesList = course && course.stories;
-            let story = storiesList.find((e: any) => e.id === storyID);
-            let episode = story.episodes.find((e: any) => e.id === episodeID);
+            let story = storiesList.find((e: any) =>{return e.id === storyID});
+            let episode = story.episodes.find((e: any) => {return e.id === episodeID});
 
             course && story && setUserpageTitle(`${course.title} > ${story.title}`);
 
@@ -84,6 +84,8 @@ function QuestionPage(){
     }, [])
 
     async function submitAnswer(choice:string, answer:string){
+        console.log(questionData);
+        console.log(subquestionData);
         if(choice === answer){
             let currentTime = new Date();
             let elapsedTime = currentTime.getTime() - timestamp.getTime();
@@ -127,7 +129,7 @@ function QuestionPage(){
 
             const getUserInfo = auth.currentUser && await getDoc(doc(db, "account_db", auth.currentUser.uid));
             let userInfo = getUserInfo?.data();
-            let checkCourse = userInfo && userInfo.episodes_done.find((e:any)=> (e.course_id === courseID));
+            let checkCourse = userInfo && userInfo.episodes_done.find((e:any)=> {return e.course_id === courseID});
 
             let initialList = userInfo && userInfo.episodes_done;
 
@@ -142,7 +144,7 @@ function QuestionPage(){
                 epsList.push(dataAdded);
                 checkCourse.episodes = epsList;
 
-                let newUserInfo = userInfo && userInfo.episodes_done.filter((e: any) => (e.course_id !== courseID));
+                let newUserInfo = userInfo && userInfo.episodes_done.filter((e: any) => {return e.course_id !== courseID});
                 newUserInfo.push(checkCourse);
 
                 auth.currentUser && await updateDoc(doc(db, "account_db", auth.currentUser.uid), {episodes_done: newUserInfo, points: initialPoints+points});

@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
-import {doc, getDoc, updateDoc, setDoc} from 'firebase/firestore'
+import {doc, getDoc, setDoc} from 'firebase/firestore'
 import {useNavigate, useParams} from 'react-router-dom'
 import NavBar from './assets/NavBar.tsx'
 import db from './configuration.tsx'
 import './App.css'
 
 
-function CreateQuestionPage(){
+function EditQuestionPage(){
 
     const auth = getAuth();
     const navigate = useNavigate();
-    const {courseID, storyID, episodeID} = useParams();
+    const {courseID, storyID, episodeID, questionID} = useParams();
 
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
@@ -20,6 +20,7 @@ function CreateQuestionPage(){
     const [choice, setChoice] = useState({a: "", b: "", c:"", d:""});
     const [answer, setAnswer] = useState(0);
     const [imgFile, setImgFile] = useState<File | null>(null);
+    const [imageURL, setImageURL] = useState("");
     const [buttonState, setButtonState] = useState(true);
     const [buttonStateTwo, setButtonStateTwo] = useState(true);
     const [buttonText, setButtonText] = useState("Add subquestion");
@@ -27,7 +28,7 @@ function CreateQuestionPage(){
     const [subquestionID, setSubquestionID] = useState("");
 
 
-    const uploadImg = async (course_id: string, story_id: string, episode_id: string, question_id: string) => {
+    const uploadImg = async (course_id: string, story_id: string, episode_id: string, question_id:string) => {
         if (!imgFile) return null; // If no file is selected, return null
         const storage = getStorage();
         const storageRef = ref(storage, `course_img/${course_id}/${story_id}/${episode_id}/${question_id}`); // store under profile_pictures/<uid>
@@ -37,9 +38,35 @@ function CreateQuestionPage(){
     };
 
     useEffect(()=>{
-        onAuthStateChanged(auth, (user)=>{
+        async function grabData(){
+            const getQuestionData = questionID && await getDoc(doc(db, "question_db", questionID));
+            const questionData = getQuestionData && getQuestionData.data();
+
+            if (questionData){
+                setTitle(questionData.title);
+                setDesc(questionData.content);
+                setImageURL(questionData.image);
+                setSubquestions(questionData.question_list);
+
+                try {
+                    const response = await fetch(questionData.image);
+                    const imageBlob = await response.blob();
+                    const fileObj = new File([imageBlob], `course_img/${courseID}/${storyID}/${episodeID}/${questionID}`, { type: imageBlob.type });
+
+                    setImgFile(fileObj);
+                    console.log('File retrieved:', fileObj);
+                }catch{
+                    setImgFile(null);
+                    console.log('error');
+                };
+
+            };
+        };
+
+        onAuthStateChanged(auth, async(user)=>{
             if (user){
                 console.log('Logged In');
+                await grabData();
             }else{
                 navigate("/login");
             }
@@ -55,41 +82,17 @@ function CreateQuestionPage(){
     }
 
     async function uploadCourse(){
-        const questionID = title.toLowerCase().replace(/\s+/g, '_');
-        const imageURL = courseID && storyID && episodeID && await uploadImg(courseID, storyID, episodeID, questionID);
+        const url = courseID && storyID && episodeID && questionID && await uploadImg(courseID, storyID, episodeID, questionID);
+        url && setImageURL(url);
         const questionData: QuestionData = {
             content: desc,
-            image: imageURL ?? "/placeholder_img.jpg",  // Default for nullish
+            image: imageURL ?? "/placeholder_img.jpg",
             title: title,
             question_list: subquestions ?? [],
             type: "mcq"
         };
 
-        await setDoc(doc(db, "question_db", questionID), questionData);
-
-        let getInitialDoc = courseID && await getDoc(doc(db, "course_db", courseID));
-        let initialDoc = getInitialDoc && getInitialDoc.data();
-        let initialStoryList =  initialDoc && initialDoc.stories;
-        let story = initialStoryList.find((e: any) =>{return e.id === storyID});
-        let initialEpisodeList = story.episodes;
-        let episode = initialEpisodeList.find((e:any)=>{return e.id === episodeID});
-        let initialQuestionList = episode.questions;
-
-        initialQuestionList.push(questionID);
-        episode.questions = initialQuestionList;
-
-        let finalEpisodeList = initialEpisodeList.filter((e: any)=>{return e.id !== episodeID});
-        finalEpisodeList.push(episode);
-        story.episodes = finalEpisodeList;
-
-        let finalStoryList = initialStoryList.filter((e:any)=>{return e.id !== storyID});
-        finalStoryList.push(story);
-
-        if (initialDoc){
-            initialDoc.stories = finalStoryList;
-        };        
-
-        initialDoc && courseID && await updateDoc(doc(db, "course_db", courseID), initialDoc);
+        questionID && await setDoc(doc(db, "question_db", questionID), questionData);
         navigate(`/admin/${courseID}/${storyID}/${episodeID}`);
     };
 
@@ -185,7 +188,7 @@ function CreateQuestionPage(){
     return(
         <div className="createpage-body">
             <NavBar/>
-            <div className="createpage-header">Create a new question</div>
+            <div className="createpage-header">Editing this question</div>
             <div className="createpage-createquestion-container">
                 <div className="createpage-left">
                     <div className="createpage-entry-container">
@@ -274,4 +277,4 @@ function CreateQuestionPage(){
     )
 }
 
-export default CreateQuestionPage
+export default EditQuestionPage

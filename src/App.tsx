@@ -16,6 +16,10 @@ import CreateStoryPage from './CreateStory.tsx'
 import CreateEpisodePage from './CreateEpisode.tsx'
 import QuestionPage from './QuestionPage.tsx'
 import CreateQuestionPage from './CreateQuestion.tsx'
+import EditCoursePage from './EditCourse.tsx'
+import EditStoryPage from './EditStory.tsx'
+import EditEpisodePage from './EditEpisode.tsx'
+import EditQuestionPage from './EditQuestion.tsx'
 import ResultsPage from './ResultsPage.tsx'
 import UserPage from './UserPage.tsx'
 import ResetPwdPage from './ResetPwd.tsx'
@@ -72,6 +76,10 @@ function App() {
         <Route path="/admin/create/:courseID" element={<CreateStoryPage />}/>
         <Route path="/admin/create/:courseID/:storyID" element={<CreateEpisodePage />}/>
         <Route path="/admin/create/:courseID/:storyID/:episodeID" element={<CreateQuestionPage />}/>
+        <Route path="/admin/edit/:courseID" element={<EditCoursePage />}/>
+        <Route path="/admin/edit/:courseID/:storyID" element={<EditStoryPage />}/>
+        <Route path="/admin/edit/:courseID/:storyID/:episodeID" element={<EditEpisodePage />}/>
+        <Route path="/admin/edit/:courseID/:storyID/:episodeID/:questionID" element={<EditQuestionPage />}/>
         <Route path="/results" element={<ResultsPage />}/>
         <Route path="/user" element={<UserPage/>}/>
         <Route path="/resetpwd" element={<ResetPwdPage />}/>

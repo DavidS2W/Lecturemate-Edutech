@@ -13,6 +13,7 @@ function EpisodePage(){
     const [title, setTitle] = useState("Loading..."); 
     const [desc, setDesc] = useState("Loading...");
     const [episodesData, setEpisodesData] = useState([{title: "Loading...", description:"Loading...", image: "/placeholder_img.jpg", id: "loading_id", questions: []}]);
+    const [directory, setDirectory] = useState(["Loading", "Loading"]);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (user)=>{
@@ -35,13 +36,13 @@ function EpisodePage(){
 
             let storiesList = course && course.stories;
 
-            let story = storiesList.find((e: any) => e.id === storyID);
+            let story = storiesList.find((e: any) => {return e.id === storyID});
 
             setTitle(story.title);
             setDesc(story.desc);
 
             story && setEpisodesData(story.episodes);
-            
+            course && setDirectory([course.title, story.title]);
 
         };
 
@@ -51,7 +52,7 @@ function EpisodePage(){
     return(
         <div className="coursepage-body">
             <NavBar/>
-            <div className="coursepage-header">{title}</div>
+            <div className="coursepage-header"><a href={`/courses`}><b>{directory[0]}</b></a> {'>'} <a href={`/courses/${courseID}`}><b>{directory[1]}</b></a> {'>'} all episodes</div>
             <div className="coursepage-desc">{desc}</div>
             <div className="coursepage-list">
                 {episodesData.map((episode)=>{

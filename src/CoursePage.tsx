@@ -9,7 +9,7 @@ import './App.css'
 function CoursePage(){
     const auth = getAuth();
     const navigate = useNavigate();
-    const [courseData, setCourseData] = useState([{title: "Loading...", desc:"Loading...", id:""}]);
+    const [courseData, setCourseData] = useState([{title: "Loading...", desc:"Loading...", id:"", image: "/placeholder_img.jpg"}]);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (user)=>{
@@ -21,17 +21,18 @@ function CoursePage(){
         });
 
         async function getCourseList(){
-            let getCourseQuery;
 
-            getCourseQuery = await getDocs(collection(db, "course_db"));
-            let courseList = getCourseQuery.docs.map(doc => {
+            let getCourseQuery = await getDocs(collection(db, "course_db"));
+            let courseList = getCourseQuery.docs.map((doc) => {
                 const data = doc.data();
                 return {
                     id: doc.id,
                     title: data.title ?? "No Title",
-                    desc: data.desc ?? "No Description"
+                    desc: data.desc ?? "No Description",
+                    image: data.image ?? "/placeholder_img.jpg"
                 };
             });
+
             setCourseData(courseList);
 
         };
@@ -49,6 +50,7 @@ function CoursePage(){
                         <div className="coursepage-box" onClick={()=>{navigate(`/courses/${course.id}`)}}>
                             <div className="coursepage-box-title">{course.title}</div>
                             <hr className="coursepage-box-line"/>
+                            <img className="coursepage-box-img" src={course.image}/>
                             <div className="coursepage-box-desc">{course.desc}</div>
                         </div>
                     )

@@ -224,19 +224,23 @@
     height: 100vh;
     box-sizing: border-box;
     min-height: 100vh;
-    background: linear-gradient(180deg,#f8fafc,#f5f7fb);
+    background: url("/coursedata_bg.png");
     gap: 20px;
-    font-family: Arial, sans-serif;
+    font-family: 'Tw Cen MT';
 }
 
 .coursepage-header{
-    width: 100%;
-    font-size: 22px;
+    width: 90%;
+    font-size: 26px;
     font-weight: 700;
     color: #0f172a;
     text-align: left;
     margin-bottom: 8px;
     box-sizing: border-box;
+    padding: 10px 0px 10px 4%;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.91);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.105);
 }
 
 .coursepage-desc{
@@ -245,7 +249,7 @@
     font-weight: 700;
     color: #0f172a;
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
     box-sizing: border-box;
 
 }
@@ -276,15 +280,17 @@
     background: #ffffff;
     border-radius: 10px;
     padding: 14px;
-    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.367);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
     box-sizing: border-box;
-    min-height: 120px;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    min-height: 320px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     cursor: pointer;
+    width: 360px;
+    height: auto;
 }
 
 .coursepage-box:hover{
@@ -293,7 +299,7 @@
 }
 
 .coursepage-box-title{
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     color: #0b1220;
     line-height: 1.2;
@@ -308,17 +314,18 @@
 }
 
 .coursepage-box-desc{
-    font-size: 14px;
+    font-size: 20px;
     color: #334155;
     line-height: 1.4;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .coursepage-box-img{
     width: 90%;
-    height: 60%;
+    height: 200px;
     border-radius: 8px;
     box-sizing: border-box;
 
@@ -327,11 +334,12 @@
 .coursepage-edit-container{
     width: 100%;
     display: flex;
-    padding: 10px 20px;
+    padding: 10px 5% 0px 20px;
     align-items: center;
     justify-content: flex-end;
     flex-direction: row;
     box-sizing: border-box;
+    font-size: 22px;
 }
 
 .coursepage-edit-button {
@@ -339,11 +347,11 @@
     height: 40px;
     border-radius: 8px;
     padding: 10px;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 600;
     text-align: center;
     color: white;
-    background-color: #3b82f6;
+    background-color: #196e37;
     border: none;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
@@ -351,7 +359,7 @@
 }
 
 .coursepage-edit-button:hover {
-    background-color: #2563eb;
+    background-color: #24ab53;
     box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
 }
 
@@ -361,6 +369,45 @@
 
 .coursepage-edit-button:focus {
     outline: none;
+}
+
+.coursepage-smalledit-button {
+    width: 120px;
+    height: 30px;
+    border-radius: 8px;
+    padding: 0px 0px 0px 0px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    background-color: #ba8f32;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coursepage-smalledit-button:hover {
+    background-color: #cdbe20;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+}
+
+.coursepage-smalledit-button:active {
+    transform: translateY(1px);
+}
+
+.coursepage-smalledit-button:focus {
+    outline: none;
+}
+
+.coursepage-button-container{
+    width: 100%;
+    box-sizing: border-box;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
 }
 
 /* small utility to ensure boxes align nicely */
@@ -1097,3 +1144,122 @@
     border-radius: 8px;
 }
 
+.createpage-createquestion-container{
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.createpage-addquestion-container{
+    width: 90%;
+    border-radius: 8px;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    box-sizing: border-box;
+    background: white;
+
+}
+
+.createpage-left{
+    width: 60%;
+    padding: 20px;
+}
+
+.createpage-right{
+    width: 30%;
+    padding: 20px;
+}
+
+.createpage-subquestion-listcontainer{
+    width: 90%;
+    max-width: 900px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    box-sizing: border-box;
+
+}
+
+.createpage-subquestion-list{
+    width: 90%;
+    max-width: 900px;
+    height: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    color: black;
+    
+}
+
+.createpage-subquestion-list-text{
+    width: 100%;
+    max-width: 100%;
+    padding: 2px 10px;
+    text-align: left !important;
+    word-wrap: break-all;
+
+}
+
+.createpage-subquestion-list-buttoncontainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.createpage-subquestion-list-button{
+    width: 70px;
+    height: 30px;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 9px;
+    text-align: center;
+    color: white;
+    background-color: #3b82f6; /* same visual tone as userpage button */
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.createpage-subquestion-list-button:active{
+    transform: translateY(1px);
+}
+
+.createpage-subquestion-list-button:focus{
+    outline: none;
+}
+
+.createpage-subquestion-list-button:disabled{
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.createpage-subquestion-list-button:hover:not(:disabled){
+    background-color: #2563eb;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
+}

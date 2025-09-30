@@ -11,6 +11,7 @@ function StoryPage(){
     const auth = getAuth();
     const navigate = useNavigate();
     const [courseData, setCourseData] = useState([{title: "Loading...", description:"Loading...", image: "/placeholder_img.jpg", id: "loading_item"}]);
+    const [directory, setDirectory] = useState(["Loading"]);
 
     useEffect(()=>{
         onAuthStateChanged(auth, (user)=>{
@@ -32,7 +33,8 @@ function StoryPage(){
             let course = getStoryQuery.data();
 
             course && setCourseData(course.stories);
-            
+            course && setDirectory([course.title]);
+
 
         };
 
@@ -42,7 +44,7 @@ function StoryPage(){
     return(
         <div className="coursepage-body">
             <NavBar/>
-            <div className="coursepage-header">Explore these stories and learn some English on the side!</div>
+            <div className="coursepage-header"><a href={`/courses`}><b>{directory[0]}</b></a>   {'>'}   all stories</div>
             <div className="coursepage-list">
                 {courseData.map((story)=>{
                     return(
